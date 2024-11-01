@@ -1,16 +1,21 @@
-# Frontend/Dockerfile
-FROM node:16.18.1-buster 
+FROM node:20.14-alpine3.20 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install
 
+COPY . .
+
 RUN npm run build
 
-RUN npm install -g serve
+FROM nginx:alpine
 
-EXPOSE 3001
+COPY --from=builder /app/build /usr/share/nginx/html
 
-CMD ["serve", "-s", "build", "-p", "3001"]
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

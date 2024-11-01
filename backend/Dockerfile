@@ -1,4 +1,4 @@
-FROM node:16.18.1-alpine3.17
+FROM node:20.14-alpine3.20
 
 WORKDIR /app
 COPY . .
@@ -6,6 +6,6 @@ COPY . .
 # COPY package*.json ./
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["node", "server.js"]
